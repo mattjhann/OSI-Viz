@@ -1,4 +1,3 @@
-import { useLayoutEffect, useRef, useState } from 'react';
 import { LayoutGroup, motion } from 'framer-motion';
 import { LAYERS } from '../data/layers.js';
 import PacketBlock from './PacketBlock.jsx';
@@ -19,38 +18,18 @@ const makeField = (layer, field, kind) => ({
 });
 
 export default function PacketAssembly({ activeIndex, hoveredField, onInspect, reducedMotion }) {
-  // The concentric packet is a single non-wrapping row, so on narrow screens it
-  // would overflow. Measure its natural size and transform-scale it to fit the
-  // canvas, sizing the footprint to the scaled box so no layout overflow remains.
-  const scalerRef = useRef(null);
-  const [fit, setFit] = useState({ scale: 1, w: undefined, h: undefined });
-
-  useLayoutEffect(() => {
-    const el = scalerRef.current;
-    if (!el) return undefined;
-    const measure = () => {
-      const canvas = el.parentElement?.parentElement; // scaler -> .assembly -> .encap-canvas
-      if (!canvas) return;
-      const avail = canvas.clientWidth - 8; // small safety margin
-      const naturalW = el.scrollWidth;
-      const naturalH = el.scrollHeight;
-      const scale = naturalW > avail && avail > 0 ? avail / naturalW : 1;
-      setFit({ scale, w: naturalW * scale, h: naturalH * scale });
-    };
-    measure();
-    const canvas = el.parentElement?.parentElement;
-    const ro = new ResizeObserver(measure);
-    if (canvas) ro.observe(canvas);
-    return () => ro.disconnect();
-  }, [activeIndex]);
-
   const sharedTransition = reducedMotion
     ? { duration: 0.2 }
     : { type: 'spring', stiffness: 220, damping: 30 };
 
   // Stable layout identity for a persistent piece. Across layer changes Framer
   // Motion animates each piece from its old box to its new (nested) box, so the
-  // previous data slides into place inside the next layer instead of re-mounting.
+  // previous data shrinks and slides into its place inside the next layer when
+  // scrolling down, and zooms back out to full size when scrolling up.
+  //
+  // The packet is fitted to narrow screens purely with CSS (smaller blocks +
+  // wrapped header fields) — never a transform-scale, which would break this
+  // shared-layout projection.
   const layoutProps = (id) =>
     reducedMotion ? {} : { layoutId: id, transition: sharedTransition };
 
@@ -196,18 +175,22 @@ export default function PacketAssembly({ activeIndex, hoveredField, onInspect, r
     );
   }
 
-  const scaled = fit.scale < 1;
   return (
-    <div className="assembly" style={scaled ? { width: fit.w, height: fit.h } : undefined}>
-      <div
-        className="assembly__scaler"
-        ref={scalerRef}
-        style={scaled ? { transform: `scale(${fit.scale})`, transformOrigin: 'top left' } : undefined}
-      >
-        <LayoutGroup>
-          <div className="assembly__inner">{renderNode(activeIndex)}</div>
-        </LayoutGroup>
-      </div>
+    <div className="assembly">
+      <LayoutGroup>
+        {/* The whole asset fades in once when it becomes visible (no zoom, no
+            movement). This wrapper persists across steps, so its entry runs only
+            on mount — step-to-step changes are handled by the shared-layout
+            morph below, never a re-fade. */}
+        <motion.div
+          className="assembly__inner"
+          initial={reducedMotion ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: reducedMotion ? 0.12 : 0.4, ease: 'easeOut' }}
+        >
+          {renderNode(activeIndex)}
+        </motion.div>
+      </LayoutGroup>
     </div>
   );
 }

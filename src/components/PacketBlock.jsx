@@ -47,13 +47,14 @@ export default function PacketBlock({
     ? { duration: 0.2 }
     : { type: 'spring', stiffness: 220, damping: 30 };
 
-  // Shared-layout blocks let the layout projection do the work (no pop-in, so
-  // they morph smoothly). Fresh blocks (e.g. newly added header fields) pop in.
+  // Shared-layout blocks (a `layoutId`) morph between positions as the structure
+  // changes. Fresh blocks fade in only — no zoom, no movement — so a newly
+  // appearing layer's fields simply materialize in place.
   const motionProps = useShared
     ? { layoutId, initial: false, animate: { opacity: 1 }, transition }
     : {
-        initial: reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.7, y: -14 },
-        animate: { opacity: 1, scale: 1, y: 0 },
+        initial: { opacity: 0 },
+        animate: { opacity: 1 },
         transition,
       };
 
