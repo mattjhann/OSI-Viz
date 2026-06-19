@@ -2,6 +2,7 @@ import EncapsulationPage from './EncapsulationPage.jsx';
 import TlsHandshakePage from './TlsHandshakePage.jsx';
 import DnsResolutionPage from './DnsResolutionPage.jsx';
 import BgpRoutingPage from './BgpRoutingPage.jsx';
+import DhcpLeasePage from './DhcpLeasePage.jsx';
 
 // ===========================================================================
 // PAGE REGISTRY — the single place that defines every visualization.
@@ -48,6 +49,15 @@ const RouteIcon = () => (
   </svg>
 );
 
+const DhcpIcon = () => (
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+    <path d="M12 3v4M12 17v4" />
+    <path d="M5 10h14" />
+    <circle cx="12" cy="13.5" r="3.5" />
+    <path d="M12 12v3l2-1" />
+  </svg>
+);
+
 export const PAGES = [
   {
     id: 'encapsulation',
@@ -84,6 +94,15 @@ export const PAGES = [
     accent: '#ff6b8b',
     icon: <RouteIcon />,
     Component: BgpRoutingPage,
+  },
+  {
+    id: 'dhcp',
+    path: '/dhcp',
+    title: 'DHCP Lease',
+    tagline: 'Step through the four-message DORA exchange that gives a device its IP address.',
+    accent: '#ffb454',
+    icon: <DhcpIcon />,
+    Component: DhcpLeasePage,
   },
 ];
 
