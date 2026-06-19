@@ -90,7 +90,7 @@ export const BGP_STEPS = [
     accentColor: STEP,
     summary:
       'Each neighbour receives the UPDATE and, before passing it on, prepends its own ASN to AS_PATH. The path grows by one AS at every hop, recording the full route back to the origin.',
-    topology: { learned: ['65010', '65002', '65004'], activePath: [], downLinks: [], flow: false },
+    topology: { learned: ['65010', '65002', '65004'], activePath: [], downLinks: [], flow: false, arrows: [['65010', '65002'], ['65010', '65004']] },
     message: {
       type: 'UPDATE',
       fields: [
@@ -126,6 +126,7 @@ export const BGP_STEPS = [
       activePath: [],
       downLinks: [],
       flow: false,
+      arrows: [['65002', '65001'], ['65004', '65003'], ['65003', '65001']],
     },
     message: {
       type: 'UPDATE',

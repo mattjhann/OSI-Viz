@@ -1347,6 +1347,23 @@ html.deck-mode body {
   font-weight: 700;
 }
 
+.bgp-arrow-line {
+  stroke: var(--block-accent);
+  stroke-width: 0.6;
+  stroke-dasharray: 1.2 1;
+  opacity: 0.6;
+}
+
+.bgp-arrow-head {
+  fill: var(--block-accent);
+  opacity: 0.8;
+}
+
+.bgp-arrow-dot {
+  fill: var(--block-accent);
+  filter: drop-shadow(0 0 1.6px color-mix(in srgb, var(--block-accent) 80%, transparent));
+}
+
 .bgp-traffic {
   fill: var(--block-accent);
   filter: drop-shadow(0 0 1.8px color-mix(in srgb, var(--block-accent) 80%, transparent));
