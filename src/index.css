@@ -1150,6 +1150,160 @@ html.deck-mode body {
 }
 
 /* ===========================================================================
+   DHCP lease — DORA phase indicator, LAN actors, broadcast wave
+   ========================================================================= */
+.dhcp-dora {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  width: 100%;
+  margin-bottom: 0.2rem;
+}
+
+.dhcp-dora__step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid var(--panel-border);
+  background: rgba(255, 255, 255, 0.02);
+  opacity: 0.4;
+  transition: opacity 0.3s ease, border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dhcp-dora__step.is-done {
+  opacity: 0.55;
+  border-color: color-mix(in srgb, var(--text-faint) 30%, transparent);
+}
+
+.dhcp-dora__step.is-active {
+  opacity: 1;
+  border-color: var(--block-accent);
+  background: color-mix(in srgb, var(--block-accent) 10%, transparent);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--block-accent) 25%, transparent);
+}
+
+.dhcp-dora__letter {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.dhcp-dora__step.is-active .dhcp-dora__letter {
+  color: var(--block-accent);
+}
+
+.dhcp-dora__label {
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+}
+
+.dhcp-dora__step.is-active .dhcp-dora__label {
+  color: var(--text-main);
+}
+
+/* LAN participants */
+.dhcp-lan {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: clamp(1rem, 4vw, 3rem);
+  width: 100%;
+  padding: 0.6rem 0;
+}
+
+.dhcp-actor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.6rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--panel-border);
+  background: rgba(255, 255, 255, 0.02);
+  min-width: 90px;
+  opacity: 0.45;
+  transition: opacity 0.3s ease, border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dhcp-actor.is-from,
+.dhcp-actor.is-to,
+.dhcp-actor.is-self {
+  opacity: 1;
+  border-color: color-mix(in srgb, var(--block-accent) 55%, transparent);
+  background: color-mix(in srgb, var(--block-accent) 8%, transparent);
+}
+
+.dhcp-actor.is-to {
+  box-shadow: 0 0 24px color-mix(in srgb, var(--block-accent) 25%, transparent);
+}
+
+.dhcp-actor.is-self {
+  box-shadow: 0 0 30px color-mix(in srgb, var(--block-accent) 30%, transparent);
+}
+
+.dhcp-actor__icon {
+  color: var(--text-faint);
+  transition: color 0.3s ease;
+}
+
+.dhcp-actor.is-from .dhcp-actor__icon,
+.dhcp-actor.is-to .dhcp-actor__icon,
+.dhcp-actor.is-self .dhcp-actor__icon {
+  color: var(--block-accent);
+}
+
+.dhcp-actor__label {
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.dhcp-actor__sub {
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  color: var(--text-faint);
+}
+
+/* Broadcast / unicast wave arrow between actors */
+.dhcp-wave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transform-origin: center;
+}
+
+.dhcp-wave__arrow {
+  font-size: 1.3rem;
+  color: var(--block-accent);
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--block-accent) 60%, transparent));
+}
+
+.dhcp-wave__tag {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--block-accent) 18%, transparent);
+  color: var(--block-accent);
+}
+
+/* ===========================================================================
    BGP routing — AS topology graph
    ========================================================================= */
 .bgp-stage-graph {
