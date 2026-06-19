@@ -4,7 +4,7 @@ import { AS_NODES, LINKS } from '../data/bgpRouting.js';
 const NODE_BY_ID = Object.fromEntries(AS_NODES.map((n) => [n.id, n]));
 const key = (a, b) => [a, b].sort().join('|');
 
-export default function BgpTopology({ learned = [], activePath = [], downLinks = [], flow = false, accentColor, reducedMotion = false }) {
+export default function BgpTopology({ learned = [], activePath = [], downLinks = [], flow = false, arrows = [], accentColor, reducedMotion = false }) {
   const learnedSet = new Set(learned);
   const downSet = new Set(downLinks.map(([a, b]) => key(a, b)));
 
@@ -36,6 +36,43 @@ export default function BgpTopology({ learned = [], activePath = [], downLinks =
               <text className="bgp-link__x" x={(a.x + b.x) / 2} y={(a.y + b.y) / 2 + 1.4} textAnchor="middle">
                 ✕
               </text>
+            )}
+          </g>
+        );
+      })}
+
+      {/* Propagation arrows — animated dots showing UPDATE direction */}
+      {arrows.map(([fromId, toId], i) => {
+        const a = NODE_BY_ID[fromId];
+        const b = NODE_BY_ID[toId];
+        if (!a || !b) return null;
+        const dx = b.x - a.x;
+        const dy = b.y - a.y;
+        const len = Math.sqrt(dx * dx + dy * dy);
+        const r = 4.4;
+        const sx = a.x + (dx / len) * r;
+        const sy = a.y + (dy / len) * r;
+        const ex = b.x - (dx / len) * r;
+        const ey = b.y - (dy / len) * r;
+        const mx = (sx + ex) / 2;
+        const my = (sy + ey) / 2;
+        const angle = Math.atan2(ey - sy, ex - sx) * (180 / Math.PI);
+        return (
+          <g key={`arrow-${fromId}-${toId}`}>
+            <line className="bgp-arrow-line" x1={sx} y1={sy} x2={ex} y2={ey} />
+            <polygon
+              className="bgp-arrow-head"
+              points="-1.6,-1.2 2,0 -1.6,1.2"
+              transform={`translate(${ex},${ey}) rotate(${angle})`}
+            />
+            {!reducedMotion && (
+              <motion.circle
+                className="bgp-arrow-dot"
+                r={1.3}
+                initial={{ cx: sx, cy: sy, opacity: 0 }}
+                animate={{ cx: [sx, mx, ex], cy: [sy, my, ey], opacity: [0, 1, 0] }}
+                transition={{ duration: 1.2, ease: 'easeInOut', repeat: Infinity, repeatDelay: 0.3 + i * 0.2 }}
+              />
             )}
           </g>
         );
