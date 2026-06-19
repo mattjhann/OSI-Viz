@@ -24,7 +24,6 @@ export default function PacketBlock({
   onInspect,
   reducedMotion = false,
   layoutId = null,
-  noEnter = false,
 }) {
   const className = [
     'block',
@@ -48,18 +47,16 @@ export default function PacketBlock({
     ? { duration: 0.2 }
     : { type: 'spring', stiffness: 220, damping: 30 };
 
-  // `noEnter` renders the block statically (a parent owns the transition — e.g.
-  // the encapsulation packet animates only on exit). Shared-layout blocks morph
-  // between positions. Otherwise fresh blocks pop in.
-  const motionProps = noEnter
-    ? { initial: false }
-    : useShared
-      ? { layoutId, initial: false, animate: { opacity: 1 }, transition }
-      : {
-          initial: reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.7, y: -14 },
-          animate: { opacity: 1, scale: 1, y: 0 },
-          transition,
-        };
+  // Shared-layout blocks (a `layoutId`) morph between positions as the structure
+  // changes. Fresh blocks fade in only — no zoom, no movement — so a newly
+  // appearing layer's fields simply materialize in place.
+  const motionProps = useShared
+    ? { layoutId, initial: false, animate: { opacity: 1 }, transition }
+    : {
+        initial: { opacity: 0 },
+        animate: { opacity: 1 },
+        transition,
+      };
 
   if (interactive) {
     return (

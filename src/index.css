@@ -462,12 +462,6 @@ html.deck-mode body {
   margin: auto;
 }
 
-/* Sizes to its content's natural width so it can be transform-scaled to fit
-   narrow screens (see PacketAssembly). */
-.assembly__scaler {
-  display: inline-block;
-}
-
 .assembly__inner {
   display: flex;
   align-items: center;
@@ -1346,6 +1340,19 @@ html.deck-mode body {
     padding: 0.5rem 0.5rem;
   }
 
+  /* Fit the concentric packet to narrow screens by shrinking blocks and letting
+     the current layer's header/trailer fields wrap onto multiple rows — never a
+     transform-scale, which would break the shared-layout morph. */
+  .pdu {
+    padding: clamp(1.4rem, 3vh, 1.8rem) 0.6rem 0.6rem;
+  }
+
+  .header-group__fields {
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 58vw;
+  }
+
   .tls-flow__zone {
     grid-template-columns: 1fr;
     justify-items: center;
@@ -1358,6 +1365,25 @@ html.deck-mode body {
   .tls-arrow {
     grid-column: 1;
     transform: rotate(90deg);
+  }
+}
+
+@media (max-width: 560px) {
+  .block {
+    min-width: 46px;
+    padding: 0.4rem 0.4rem;
+  }
+
+  .block__label {
+    font-size: 0.68rem;
+  }
+
+  .pdu__row {
+    gap: 0.35rem;
+  }
+
+  .header-group__fields {
+    max-width: 72vw;
   }
 }
 
