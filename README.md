@@ -43,8 +43,10 @@ The menu, routing, and home cards update automatically — no other wiring neede
 
 Reusable building blocks you can lean on:
 
-- `src/hooks/useScrollSteps.js` — maps scroll progress over a tall track to a
-  discrete active step (the engine behind every scroll-driven page).
+- `src/components/ScrollDeck.jsx` + `src/hooks/useDeck.js` — the engine behind
+  every scroll-driven page: a fixed, full-viewport deck of sections (hero → steps
+  → footer) where each discrete gesture (wheel/swipe/key) moves exactly one step.
+  A page hands it a `stepCount` and a `renderStage` that animates on `activeIndex`.
 - `src/components/PacketBlock.jsx` — a labeled, hoverable rectangle/field.
 - `src/components/FieldDetail.jsx` — the explanation panel shown under the diagram.
 - `src/components/StepRail.jsx` — the fixed progress rail.
