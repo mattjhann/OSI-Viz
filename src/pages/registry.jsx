@@ -3,6 +3,9 @@ import TlsHandshakePage from './TlsHandshakePage.jsx';
 import DnsResolutionPage from './DnsResolutionPage.jsx';
 import BgpRoutingPage from './BgpRoutingPage.jsx';
 import DhcpLeasePage from './DhcpLeasePage.jsx';
+import XssPage from './XssPage.jsx';
+import UseAfterFreePage from './UseAfterFreePage.jsx';
+import BufferOverflowPage from './BufferOverflowPage.jsx';
 import TcpHandshakePage from './TcpHandshakePage.jsx';
 import KubernetesPage from './KubernetesPage.jsx';
 
@@ -57,6 +60,31 @@ const DhcpIcon = () => (
     <path d="M5 10h14" />
     <circle cx="12" cy="13.5" r="3.5" />
     <path d="M12 12v3l2-1" />
+  </svg>
+);
+
+const XssIcon = () => (
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+    <path d="M8 4 4 12l4 8M16 4l4 8-4 8" />
+    <path d="M13 4 11 20" />
+  </svg>
+);
+
+const UafIcon = () => (
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+    <rect x="3" y="9" width="6" height="6" rx="1" strokeDasharray="2 2" />
+    <rect x="15" y="9" width="6" height="6" rx="1" />
+    <path d="M9 12h4" strokeDasharray="1.6 1.6" />
+    <path d="M12.5 10.2 14 12l-1.5 1.8" />
+  </svg>
+);
+
+const StackIcon = () => (
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+    <rect x="5" y="3" width="14" height="4" rx="1" />
+    <rect x="5" y="8" width="14" height="4" rx="1" />
+    <rect x="5" y="13" width="14" height="4" rx="1" strokeDasharray="1.8 1.8" />
+    <path d="M4 21h16" />
   </svg>
 );
 
@@ -129,6 +157,33 @@ export const PAGES = [
     accent: '#9d7bff',
     icon: <DhcpIcon />,
     Component: DhcpLeasePage,
+  },
+  {
+    id: 'xss',
+    path: '/xss',
+    title: 'Cross-Site Scripting',
+    tagline: 'Reflected, stored, and DOM-based XSS — how untrusted input becomes executed markup.',
+    accent: '#ef4444',
+    icon: <XssIcon />,
+    Component: XssPage,
+  },
+  {
+    id: 'use-after-free',
+    path: '/use-after-free',
+    title: 'Use-After-Free',
+    tagline: 'A dangling pointer, a reused heap slot, and a hijacked virtual call.',
+    accent: '#c77dff',
+    icon: <UafIcon />,
+    Component: UseAfterFreePage,
+  },
+  {
+    id: 'buffer-overflow',
+    path: '/buffer-overflow',
+    title: 'Stack Buffer Overflow',
+    tagline: 'An unbounded copy walks past a buffer and overwrites the return address.',
+    accent: '#38bdf8',
+    icon: <StackIcon />,
+    Component: BufferOverflowPage,
   },
   {
     id: 'kubernetes',
