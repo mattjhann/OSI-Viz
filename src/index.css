@@ -1485,6 +1485,283 @@ html.deck-mode body {
 }
 
 /* ===========================================================================
+   Security walkthroughs — shared code panel + memory grid (XSS, UAF, overflow)
+   ========================================================================= */
+.code-stage-graph {
+  align-self: stretch;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  padding: 0.25rem;
+}
+
+.code-panels,
+.mem-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: min(760px, 100%);
+}
+
+.mem-stage--split {
+  width: min(880px, 100%);
+}
+
+.code-block {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--panel-border);
+  background: var(--panel);
+  overflow: hidden;
+}
+
+.code-block__title {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  padding: 0.6rem 0.9rem 0;
+}
+
+.code-block__body {
+  margin: 0;
+  padding: 0.5rem 0;
+  font-family: var(--mono);
+  font-size: 0.84rem;
+  line-height: 1.6;
+  white-space: normal;
+}
+
+.code-line {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  width: 100%;
+  padding: 0.2rem 0.9rem;
+  border: none;
+  border-left: 3px solid transparent;
+  background: transparent;
+  color: var(--text-dim);
+  font: inherit;
+  text-align: left;
+  cursor: default;
+}
+
+.code-line.is-interactive {
+  cursor: pointer;
+}
+
+.code-line__num {
+  flex: none;
+  width: 1.6rem;
+  text-align: right;
+  color: var(--text-faint);
+  opacity: 0.6;
+  user-select: none;
+}
+
+.code-line__text {
+  flex: 1;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--text);
+}
+
+.code-line.is-danger {
+  border-left-color: #ff6b8b;
+  background: color-mix(in srgb, #ff6b8b 8%, transparent);
+}
+
+.code-line.is-safe {
+  border-left-color: #42d6a4;
+  background: color-mix(in srgb, #42d6a4 8%, transparent);
+}
+
+.code-line.is-active {
+  border-left-color: var(--block-accent);
+  background: color-mix(in srgb, var(--block-accent) 12%, transparent);
+}
+
+.code-line.is-interactive:hover,
+.code-line.is-interactive.is-hovered {
+  border-left-color: var(--block-accent);
+  background: color-mix(in srgb, var(--block-accent) 16%, transparent);
+}
+
+.code-line.is-interactive.is-hovered .code-line__text {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* --- Memory grid (heap row / stack column) -------------------------------- */
+.mem-grid {
+  display: flex;
+  gap: 0.6rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.mem-grid--row {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.mem-grid--column {
+  flex-direction: column;
+  align-items: stretch;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.mem-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 110px;
+  padding: 0.55rem 0.7rem;
+  border-radius: 10px;
+  border: 1.5px solid var(--panel-border);
+  background: var(--panel);
+  font-family: var(--mono);
+  text-align: center;
+  color: var(--text-dim);
+}
+
+.mem-grid--column .mem-cell {
+  min-width: 0;
+  text-align: left;
+}
+
+button.mem-cell {
+  font: inherit;
+  cursor: pointer;
+}
+
+.mem-cell__addr {
+  font-size: 0.65rem;
+  color: var(--text-faint);
+  letter-spacing: 0.04em;
+}
+
+.mem-cell__label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.mem-cell__value {
+  font-size: 0.72rem;
+  color: var(--text-faint);
+}
+
+.mem-cell.is-empty {
+  border-style: dashed;
+  opacity: 0.5;
+}
+
+.mem-cell.is-allocated {
+  border-color: color-mix(in srgb, var(--block-accent) 55%, transparent);
+  background: color-mix(in srgb, var(--block-accent) 10%, var(--bg-soft));
+}
+
+.mem-cell.is-freed {
+  border-style: dashed;
+  border-color: var(--text-faint);
+  opacity: 0.75;
+}
+
+.mem-cell.is-attacker {
+  border-color: #c77dff;
+  background: color-mix(in srgb, #c77dff 16%, var(--bg-soft));
+  box-shadow: 0 0 18px color-mix(in srgb, #c77dff 25%, transparent);
+}
+
+.mem-cell.is-attacker .mem-cell__label {
+  color: #c77dff;
+}
+
+.mem-cell.is-overwritten {
+  border-color: #ff6b8b;
+  background: color-mix(in srgb, #ff6b8b 16%, var(--bg-soft));
+}
+
+.mem-cell.is-overwritten .mem-cell__label {
+  color: #ff6b8b;
+}
+
+.mem-cell.is-canary {
+  border-color: #ffb454;
+  background: color-mix(in srgb, #ffb454 12%, var(--bg-soft));
+}
+
+.mem-cell.is-retaddr {
+  border-color: var(--panel-border);
+  background: color-mix(in srgb, var(--block-accent) 6%, var(--bg-soft));
+  font-weight: 600;
+}
+
+.mem-cell.is-interactive:hover,
+.mem-cell.is-interactive.is-hovered {
+  border-color: var(--block-accent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--block-accent) 40%, transparent);
+}
+
+.mem-pointer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.mem-pointer__arrow {
+  color: var(--block-accent);
+}
+
+.mem-pointer.is-dangling {
+  color: #ff6b8b;
+}
+
+.mem-pointer.is-dangling .mem-pointer__arrow {
+  color: #ff6b8b;
+}
+
+.mem-pointer.is-firing {
+  animation: mem-pointer-fire 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes mem-pointer-fire {
+  from { opacity: 0.6; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mem-pointer.is-firing {
+    animation: none;
+  }
+}
+
+@media (min-width: 860px) {
+  .mem-stage--split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 1.5rem;
+  }
+
+  .mem-stage--split .mem-grid--column {
+    margin: 0;
+  }
+}
+
+/* ===========================================================================
    Responsive
    ========================================================================= */
 /* Reserve a left gutter for the fixed progress rail so centered stage content
