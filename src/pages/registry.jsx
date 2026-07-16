@@ -85,6 +85,9 @@ const StackIcon = () => (
     <rect x="5" y="8" width="14" height="4" rx="1" />
     <rect x="5" y="13" width="14" height="4" rx="1" strokeDasharray="1.8 1.8" />
     <path d="M4 21h16" />
+  </svg>
+);
+
 const TcpIcon = () => (
   <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
     <path d="M4 8h13M17 8l-3-3M17 8l-3 3" />
@@ -181,6 +184,8 @@ export const PAGES = [
     accent: '#38bdf8',
     icon: <StackIcon />,
     Component: BufferOverflowPage,
+  },
+  {
     id: 'kubernetes',
     path: '/kubernetes',
     title: 'Kubernetes Networking',

@@ -1779,6 +1779,9 @@ button.mem-cell {
   .mem-stage--split .mem-grid--column {
     margin: 0;
   }
+}
+
+/* ===========================================================================
    Kubernetes networking
    ========================================================================= */
 /* Stretch to fill the stage's middle grid row so the SVG scales to the space
