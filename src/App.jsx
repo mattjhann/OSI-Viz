@@ -9,10 +9,12 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
-  // Close the menu and jump to the top whenever the route changes.
+  // Close the menu, jump to the top, and retitle whenever the route changes.
   useEffect(() => {
     setMenuOpen(false);
     window.scrollTo(0, 0);
+    const page = PAGES.find((p) => p.path === location.pathname);
+    document.title = page ? `${page.title} · NetViz` : 'NetViz';
   }, [location.pathname]);
 
   return (
