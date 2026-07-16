@@ -11,6 +11,7 @@ const N = BGP_STEPS.length;
 const RAIL_ITEMS = BGP_STEPS.map((s) => ({
   id: s.id,
   label: s.title,
+  sublabel: s.message ? `BGP ${s.message.type}` : 'topology',
   accentColor: s.accentColor,
 }));
 

@@ -3,6 +3,8 @@ import TlsHandshakePage from './TlsHandshakePage.jsx';
 import DnsResolutionPage from './DnsResolutionPage.jsx';
 import BgpRoutingPage from './BgpRoutingPage.jsx';
 import DhcpLeasePage from './DhcpLeasePage.jsx';
+import TcpHandshakePage from './TcpHandshakePage.jsx';
+import KubernetesPage from './KubernetesPage.jsx';
 
 // ===========================================================================
 // PAGE REGISTRY — the single place that defines every visualization.
@@ -58,6 +60,21 @@ const DhcpIcon = () => (
   </svg>
 );
 
+const TcpIcon = () => (
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+    <path d="M4 8h13M17 8l-3-3M17 8l-3 3" />
+    <path d="M20 16H7M7 16l3-3M7 16l3 3" />
+  </svg>
+);
+
+const K8sIcon = () => (
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+    <path d="M12 2.5 20.5 7v10L12 21.5 3.5 17V7L12 2.5Z" />
+    <circle cx="12" cy="12" r="3.2" />
+    <path d="M12 5.5v3.3M17.8 8.9l-2.9 1.7M17.8 15.1l-2.9-1.7M12 18.5v-3.3M6.2 15.1l2.9-1.7M6.2 8.9l2.9 1.7" />
+  </svg>
+);
+
 export const PAGES = [
   {
     id: 'encapsulation',
@@ -67,6 +84,15 @@ export const PAGES = [
     accent: '#7c8cff',
     icon: <NestedIcon />,
     Component: EncapsulationPage,
+  },
+  {
+    id: 'tcp',
+    path: '/tcp',
+    title: 'TCP Connection',
+    tagline: 'From SYN to TIME-WAIT: the handshake, byte counting, and teardown of a connection.',
+    accent: '#4dd0c4',
+    icon: <TcpIcon />,
+    Component: TcpHandshakePage,
   },
   {
     id: 'tls',
@@ -100,9 +126,18 @@ export const PAGES = [
     path: '/dhcp',
     title: 'DHCP Lease',
     tagline: 'Step through the four-message DORA exchange that gives a device its IP address.',
-    accent: '#ffb454',
+    accent: '#9d7bff',
     icon: <DhcpIcon />,
     Component: DhcpLeasePage,
+  },
+  {
+    id: 'kubernetes',
+    path: '/kubernetes',
+    title: 'Kubernetes Networking',
+    tagline: 'How a request finds a Pod: Services, cluster DNS, kube-proxy DNAT, and Ingress.',
+    accent: '#5aa9ff',
+    icon: <K8sIcon />,
+    Component: KubernetesPage,
   },
 ];
 
