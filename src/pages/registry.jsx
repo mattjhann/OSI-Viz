@@ -8,6 +8,7 @@ import UseAfterFreePage from './UseAfterFreePage.jsx';
 import BufferOverflowPage from './BufferOverflowPage.jsx';
 import TcpHandshakePage from './TcpHandshakePage.jsx';
 import KubernetesPage from './KubernetesPage.jsx';
+import MulticastVpnPage from './MulticastVpnPage.jsx';
 
 // ===========================================================================
 // PAGE REGISTRY — the single place that defines every visualization.
@@ -103,6 +104,16 @@ const K8sIcon = () => (
   </svg>
 );
 
+const TunnelIcon = () => (
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+    <rect x="7" y="5" width="10" height="14" rx="5" />
+    <circle cx="4" cy="8" r="1.6" fill="currentColor" stroke="none" />
+    <circle cx="4" cy="16" r="1.6" fill="currentColor" stroke="none" />
+    <circle cx="20" cy="12" r="1.6" fill="currentColor" stroke="none" />
+    <path d="M5.4 8h1.6M5.4 16h1.6M17 12h3" />
+  </svg>
+);
+
 export const PAGES = [
   {
     id: 'encapsulation',
@@ -193,6 +204,15 @@ export const PAGES = [
     accent: '#5aa9ff',
     icon: <K8sIcon />,
     Component: KubernetesPage,
+  },
+  {
+    id: 'multicast-vpn',
+    path: '/multicast-vpn',
+    title: 'Multicast over VPN Tunnels',
+    tagline: 'Compare five VPN tunnel designs to see which ones carry multicast — and what each one costs.',
+    accent: '#84cc16',
+    icon: <TunnelIcon />,
+    Component: MulticastVpnPage,
   },
 ];
 

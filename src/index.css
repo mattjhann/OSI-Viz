@@ -1959,6 +1959,112 @@ button.mem-cell {
 }
 
 /* ===========================================================================
+   Multicast-over-VPN — pass/fail tunnel comparison topology
+   ========================================================================= */
+.mcast-topology {
+  width: min(760px, 100%);
+  height: auto;
+  max-height: 46vh;
+  overflow: visible;
+}
+
+.mcast-link {
+  stroke-width: 0.55;
+  fill: none;
+  transition: stroke 0.4s ease, opacity 0.4s ease;
+}
+
+.mcast-link.is-active {
+  stroke: var(--block-accent);
+  filter: drop-shadow(0 0 1.4px color-mix(in srgb, var(--block-accent) 65%, transparent));
+}
+
+.mcast-link.is-blocked {
+  stroke: #ff6b8b;
+  stroke-dasharray: 1.6 1.4;
+  opacity: 0.85;
+}
+
+.mcast-link--tree {
+  stroke-dasharray: 2.2 1.2;
+}
+
+.mcast-link--replica {
+  stroke-width: 0.85;
+}
+
+.mcast-link__x {
+  fill: #ff6b8b;
+  font-size: 4px;
+  font-weight: 700;
+}
+
+.mcast-link__dot {
+  fill: var(--block-accent);
+  filter: drop-shadow(0 0 1.8px color-mix(in srgb, var(--block-accent) 80%, transparent));
+}
+
+.mcast-node__shape {
+  fill: var(--bg-soft);
+  stroke: var(--text-faint);
+  stroke-width: 0.7;
+  transition: stroke 0.35s ease, fill 0.35s ease, filter 0.35s ease;
+}
+
+.mcast-node.is-source .mcast-node__shape,
+.mcast-node.is-receiver .mcast-node__shape {
+  stroke: var(--block-accent);
+  fill: color-mix(in srgb, var(--block-accent) 16%, var(--bg-soft));
+}
+
+.mcast-node.is-tunnel .mcast-node__shape,
+.mcast-node.is-router .mcast-node__shape {
+  stroke: var(--block-accent);
+  fill: color-mix(in srgb, var(--block-accent) 10%, var(--bg-soft));
+  filter: drop-shadow(0 0 2px color-mix(in srgb, var(--block-accent) 55%, transparent));
+}
+
+.mcast-node__label {
+  fill: var(--text);
+  font-size: 2.6px;
+  font-weight: 700;
+}
+
+.mcast-node__sub {
+  fill: var(--text-faint);
+  font-size: 2.1px;
+}
+
+.mcast-verdict {
+  white-space: nowrap;
+}
+
+.mcast-verdict--fail {
+  color: #ff6b8b;
+  background: color-mix(in srgb, #ff6b8b 16%, transparent);
+  border-color: color-mix(in srgb, #ff6b8b 40%, transparent);
+}
+
+.mcast-verdict--works {
+  color: #42d6a4;
+  background: color-mix(in srgb, #42d6a4 16%, transparent);
+  border-color: color-mix(in srgb, #42d6a4 40%, transparent);
+}
+
+.mcast-verdict--works-manual,
+.mcast-verdict--caveat {
+  color: #ffb454;
+  background: color-mix(in srgb, #ffb454 16%, transparent);
+  border-color: color-mix(in srgb, #ffb454 40%, transparent);
+}
+
+.mcast-verdict--context {
+  color: var(--text-dim);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--panel-border);
+}
+
+/* ===========================================================================
    Responsive
    ========================================================================= */
 /* Reserve a left gutter for the fixed progress rail so centered stage content
