@@ -9,6 +9,7 @@ import BufferOverflowPage from './BufferOverflowPage.jsx';
 import TcpHandshakePage from './TcpHandshakePage.jsx';
 import KubernetesPage from './KubernetesPage.jsx';
 import MulticastVpnPage from './MulticastVpnPage.jsx';
+import K8sServiceTypesPage from './K8sServiceTypesPage.jsx';
 
 // ===========================================================================
 // PAGE REGISTRY — the single place that defines every visualization.
@@ -114,6 +115,15 @@ const TunnelIcon = () => (
   </svg>
 );
 
+const ServiceIcon = () => (
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+    <path d="M4 5h16" />
+    <path d="M7 11h10" />
+    <path d="M10 17h4" />
+    <circle cx="12" cy="21.2" r="1.1" fill="currentColor" stroke="none" />
+  </svg>
+);
+
 export const PAGES = [
   {
     id: 'encapsulation',
@@ -213,6 +223,15 @@ export const PAGES = [
     accent: '#84cc16',
     icon: <TunnelIcon />,
     Component: MulticastVpnPage,
+  },
+  {
+    id: 'k8s-service-types',
+    path: '/k8s-service-types',
+    title: 'Kubernetes Service Types',
+    tagline: 'ClusterIP, NodePort, LoadBalancer — how each one layers on top of the last.',
+    accent: '#22d3ee',
+    icon: <ServiceIcon />,
+    Component: K8sServiceTypesPage,
   },
 ];
 
